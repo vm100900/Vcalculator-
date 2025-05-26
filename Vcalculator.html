@@ -8,12 +8,48 @@
 			document.getElementById("result").value+=val
 		}
 		
+		let equalClickCount = 0;
+
+		function showBreakoutGame() {
+		    // Create overlay
+		    const overlay = document.createElement('div');
+		    overlay.id = 'breakout-overlay';
+		    overlay.style.position = 'fixed';
+		    overlay.style.top = '0';
+		    overlay.style.left = '0';
+		    overlay.style.width = '100vw';
+		    overlay.style.height = '100vh';
+		    overlay.style.background = 'rgba(0,0,0,0.85)';
+		    overlay.style.display = 'flex';
+		    overlay.style.justifyContent = 'center';
+		    overlay.style.alignItems = 'center';
+		    overlay.style.zIndex = '9999';
+		    overlay.innerHTML = `
+		        <div style="position:relative;">
+		            <canvas id='breakout-canvas' width='400' height='300' style='background:#222;display:block;'></canvas>
+		            <button onclick="closeBreakoutGame()" style="position:absolute;top:5px;right:5px;z-index:2;">Close</button>
+		        </div>
+		    `;
+		    document.body.appendChild(overlay);
+		    startBreakout();
+		}
+
+		function closeBreakoutGame() {
+		    const overlay = document.getElementById('breakout-overlay');
+		    if (overlay) overlay.remove();
+		}
+		
 		//function that evaluates the digit and return result
 		function solve()
 		{
 			let x = document.getElementById("result").value
 			let y = eval(x)
 			document.getElementById("result").value = y
+			equalClickCount++;
+			if (equalClickCount === 5) {
+				showBreakoutGame();
+				equalClickCount = 0;
+			}
 		}
 		
 		//function that clear the display
